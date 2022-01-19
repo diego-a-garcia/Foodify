@@ -1,75 +1,25 @@
-import 'package:diego_test/FridgeData.dart';
 import 'package:flutter/material.dart';
-import "Pantry.dart";
-import 'Freezer.dart';
 import 'main.dart';
-import 'FridgeData.dart';
-import 'newFridge.dart';
-import 'package:firebase_database/firebase_database.dart';
-
-class MySecondPage extends StatefulWidget {
-  const MySecondPage({Key? key, required this.title}) : super(key: key);
+import 'Pantry.dart';
+import 'screen2.dart';
+class MyFreezerPage extends StatefulWidget {
+  const MyFreezerPage({Key? key, required this.title}) : super(key: key);
 
 
   final String title;
 
   @override
-  State<MySecondPage> createState() => _MySecondPageState();
+  State<MyFreezerPage> createState() => _MyFreezerPageState();
 }
 
-class _MySecondPageState extends State<MySecondPage> {
+class _MyFreezerPageState extends State<MyFreezerPage> {
 
-  var food = [];
 
-  _MySecondPageState(){
-    FirebaseDatabase.instance.reference().child("FoodData/FridgeData").once()
-        .then((datasnapshot){
-          var itemsTemp = [];
-          datasnapshot.value.forEach((k,v){
-            itemsTemp.add(v);
-          });
-          food = itemsTemp;
-          print(food);
-          setState(() {
 
-          });
-    }
-    );
-
-  }
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
-      body:ListView.builder(
-        itemCount: food.length,
-        itemBuilder: (context, index) {
-          return Container(
-            height:50,
-            margin: EdgeInsets.only(top:5, bottom:5,left:20,right:20),
-            child: Row(
-
-
-              children: [
-
-                Text(
-                    
-                    ' ${food[index]["name"]}'
-
-                ),
-                Spacer(),
-
-                Text(
-                    '${food[index]["quant"]}'
-                ),
-                Spacer(),
-                Text(
-                    '${food[index]["exp"]}'
-                ),
-              ],
-            ),
-          );
-        },
-      ),
       drawer: Drawer(
         // Add a ListView to the drawer. This ensures the user can scroll
         // through the options in the drawer if there isn't enough vertical
@@ -102,8 +52,9 @@ class _MySecondPageState extends State<MySecondPage> {
                 // ...
                 // Then close the drawer
 
-                Navigator.pop(context);
-
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => MySecondPage(title: "Page 2",))
+                );
               },
             ),
             ListTile(
@@ -123,29 +74,31 @@ class _MySecondPageState extends State<MySecondPage> {
                 // Update the state of the app
                 // ...
                 // Then close the drawer
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => MyFreezerPage(title: "Freezer",))
+                Navigator.pop(
+                    context
                 );
               },
             ),
-
           ],
         ),
       ),
 
+
       appBar: AppBar(
 
-        title: Text("Fridge"),
+        title: Text(widget.title),
       ),
-      floatingActionButton:FloatingActionButton(
-        onPressed: (){
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => newFridgePage())
-          );
-        },
-        child: Icon(Icons.food_bank)
-      ) ,
+      body: Center(
+        // Center is a layout widget. It takes a single child and positions it
+        // in the middle of the parent.
+        child: Column(
+
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+
+          ],
+        ),
+      ),
        // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
